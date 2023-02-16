@@ -42,7 +42,23 @@ function mergeSort2(array) {
   return sortedArray;
 }
 
+const distinctify = (array) => {
+  const distinctArray = [];
+  const arrayCopy = [];
+  let valueCounter = 0;
+
+
+  array.forEach(element => {
+    const hasCopy = distinctArray.includes(element)
+    if (hasCopy) return
+    distinctArray.push(element);
+  });
+
+  return distinctArray;
+}
+
 
 
 
 export default mergeSort2
+export {distinctify}

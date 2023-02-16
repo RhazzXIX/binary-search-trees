@@ -1,12 +1,13 @@
 import config from "./loggingConfig"
 import { prettyPrint } from "./loggingConfig"
-import mergeSort2 from "./mergeSort";
+import {default as mergeSort2, distinctify} from "./arrayHandler";
 
 
-const numArray = [5, 75, 2, 36 , 1 , 99];
+const numArray = [5, 75,100, 25, 99, 1, 2, 36 , 1 , 99];
 
-const tree = function (array) {
-  const sortedArray = (mergeSort2(array));
+const Tree = function (array) {
+  const distinctArray = distinctify(array);
+  const sortedArray = (mergeSort2(distinctArray));
 
   const Node = (data, leftData, rightData) => {
     const TreeNode = {
@@ -15,6 +16,10 @@ const tree = function (array) {
       right: rightData,
     }
     return TreeNode;
+  }
+
+  const buildTree = () => {
+    return sortedArray;
   }
 
   const leftData = { 
@@ -32,17 +37,17 @@ const tree = function (array) {
   const node1 = Node('test', leftData, rightData)
   console.log(node1);
 
-  return node1
+  return buildTree()
 }
 
 
 
 
-prettyPrint(tree(numArray));
+console.log(Tree(numArray));
 
 
 
 
 
 
-export default tree
+export default Tree
