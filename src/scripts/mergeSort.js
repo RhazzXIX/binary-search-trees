@@ -42,9 +42,7 @@ function mergeSort2(array) {
   return sortedArray;
 }
 
-const numArray = [5, 75, 2, 36 , 1 , 99];
 
 
-console.log(mergeSort2([5, 75, 2, 36 , 1 , 99])) 
 
 export default mergeSort2
