@@ -4,7 +4,7 @@ import { default as mergeSort2, distinctify } from "./scripts/arrayHandler";
 import makeRandomNumArray from "./scripts/makeRandomArray";
 
 const numArray = [5, 75, 100, 29, 1, 85, 63, 14, 85, 2, 14, 76, 45, 1 , 25 , 66 , 75 , 36 , 9 , 11];
-const testArray = [5, 1];
+const testArray = [5, 1, 25];
 
 const Tree = function (array) {
   const distinctArray = distinctify(array);
@@ -30,11 +30,33 @@ const Tree = function (array) {
     return builtTree;
   };
 
+  const insertRec = function (num, root) {
+    if (root === null) {
+      root = Node(num, null, null)
+      return root
+    };
+    if (num < root.data) {
+      root.left = insertRec(num, root.left)
+    } else if (num > root.data) {
+      root.right = insertRec(num, root.right)
+    }
+    return root
+  }
+
+  const insert = function (num) {
+    insertRec(num, this)
+  }
+
   const balancedBinaryTree = buildBalancedTree(sortedArray);
 
-  return balancedBinaryTree;
+  return Object.assign(balancedBinaryTree, {insert});
 };
 
-prettyPrint(Tree(makeRandomNumArray(87)));
+const random1 = makeRandomNumArray(1)
+
+const firstTree = Tree(numArray);
+prettyPrint(firstTree);
+firstTree.insert(3);
+prettyPrint(firstTree);
 
 export default Tree;
