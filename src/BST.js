@@ -1,6 +1,7 @@
-import config from "./loggingConfig";
-import { prettyPrint } from "./loggingConfig";
-import { default as mergeSort2, distinctify } from "./arrayHandler";
+import config from "./scripts/loggingConfig";
+import { prettyPrint } from "./scripts/loggingConfig";
+import { default as mergeSort2, distinctify } from "./scripts/arrayHandler";
+import makeRandomNumArray from "./scripts/makeRandomArray";
 
 const numArray = [5, 75, 100, 29, 1, 85, 63, 14, 85, 2, 14, 76, 45, 1 , 25 , 66 , 75 , 36 , 9 , 11];
 const testArray = [5, 1];
@@ -34,6 +35,6 @@ const Tree = function (array) {
   return balancedBinaryTree;
 };
 
-prettyPrint(Tree(numArray));
+prettyPrint(Tree(makeRandomNumArray(87)));
 
 export default Tree;
