@@ -1,53 +1,39 @@
-import config from "./loggingConfig"
-import { prettyPrint } from "./loggingConfig"
-import {default as mergeSort2, distinctify} from "./arrayHandler";
+import config from "./loggingConfig";
+import { prettyPrint } from "./loggingConfig";
+import { default as mergeSort2, distinctify } from "./arrayHandler";
 
-
-const numArray = [5, 75,100, 25, 99, 1, 2, 36 , 1 , 99];
+const numArray = [5, 75, 100, 29, 1, 85, 63, 14, 85, 2, 14, 76, 45, 1 , 25 , 66 , 75 , 36 , 9 , 11];
+const testArray = [5, 1];
 
 const Tree = function (array) {
   const distinctArray = distinctify(array);
-  const sortedArray = (mergeSort2(distinctArray));
+  const sortedArray = mergeSort2(distinctArray);
 
   const Node = (data, leftData, rightData) => {
     const TreeNode = {
       data,
       left: leftData,
       right: rightData,
-    }
+    };
     return TreeNode;
-  }
-
-  const buildTree = () => {
-    return sortedArray;
-  }
-
-  const leftData = { 
-    data: 'string1',
-    left: null,
-    right: null
   };
 
-  const rightData = { 
-    data: 2564612,
-    left: null,
-    right: null
+  const buildBalancedTree = (handledArray) => {
+    const mid = Math.floor(handledArray.length / 2);
+    if (handledArray.length === 0) return null;
+    const builtTree = Node(
+      handledArray[mid],
+      buildBalancedTree(handledArray.slice(0, mid)),
+      buildBalancedTree(handledArray.slice(mid + 1))
+    );
+    return builtTree;
   };
 
-  const node1 = Node('test', leftData, rightData)
-  console.log(node1);
+  const balancedBinaryTree = buildBalancedTree(sortedArray);
 
-  return buildTree()
-}
+  return balancedBinaryTree;
+};
 
+prettyPrint(Tree(numArray));
 
-
-
-console.log(Tree(numArray));
-
-
-
-
-
-
-export default Tree
+export default Tree;
