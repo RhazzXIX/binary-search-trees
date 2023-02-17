@@ -30,33 +30,66 @@ const Tree = function (array) {
     return builtTree;
   };
 
-  const insertRec = function (num, root) {
+  const insertRec = function (value, root) {
     if (root === null) {
-      root = Node(num, null, null)
+      root = Node(value, null, null)
       return root
     };
-    if (num < root.data) {
-      root.left = insertRec(num, root.left)
-    } else if (num > root.data) {
-      root.right = insertRec(num, root.right)
+    if (value < root.data) {
+      root.left = insertRec(value, root.left)
+    } else if (value > root.data) {
+      root.right = insertRec(value, root.right)
     }
     return root
   }
 
-  const insert = function (num) {
-    insertRec(num, this)
+  const insert = function (value) {
+    insertRec(value, this)
   }
+
+  const deleteRec = function(value, root) {
+    console.log(value);
+    if (value === root.data) {
+      root.data = null;
+      return
+    }
+    if (value < root.data) deleteRec(value, root.left)
+    else if (value > root.data) deleteRec(value, root.right);
+  }
+
+  const deleteRoot = function (value) {
+    deleteRec(value, this)
+  }
+
+  const find = function (value, root) {
+    if (root === undefined) {
+      return find(value, this)
+    };
+    if (root === null) {
+      console.log('Data not found')
+      return root
+    }
+    if (value === root.data) return root;
+    if (value < root.data) {
+      return find(value, root.left)
+    } else if (value > root.data) {
+      return find(value, root.right)
+    }    
+  }
+
 
   const balancedBinaryTree = buildBalancedTree(sortedArray);
 
-  return Object.assign(balancedBinaryTree, {insert});
+  return Object.assign(balancedBinaryTree, {insert, deleteRoot, find});
 };
 
-const random1 = makeRandomNumArray(1)
+const random1 = makeRandomNumArray(1155)
 
-const firstTree = Tree(numArray);
-prettyPrint(firstTree);
+const firstTree = Tree(testArray);
+// prettyPrint(firstTree);
 firstTree.insert(3);
-prettyPrint(firstTree);
+// firstTree.deleteRoot(36);
+// prettyPrint(firstTree);
+console.log(firstTree.find(99));
 
 export default Tree;
