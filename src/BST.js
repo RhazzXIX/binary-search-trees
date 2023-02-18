@@ -13,6 +13,9 @@ const Tree = function (array) {
   const distinctArray = distinctify(array);
   const sortedArray = mergeSort2(distinctArray);
 
+  const treeData = [];
+  const queueArray = [];
+
   const Node = (data, leftData, rightData) => {
     const TreeNode = {
       data,
@@ -87,7 +90,6 @@ const Tree = function (array) {
   };
 
   const deleteRoot = function (value) {
-    console.log(value);
     const toBeDeleted = find(value, this);
     if (toBeDeleted === null) return;
     const previousRoot = getPreviousRoot(value, this);
@@ -108,20 +110,13 @@ const Tree = function (array) {
         break;
       case toBeDeleted.left !== null && toBeDeleted.right !== null:
         const appropriateLeaf = getAppropriateLeaf(value, toBeDeleted);
-        console.log(appropriateLeaf);
         deleteRoot.call(this, appropriateLeaf.data);
+        appropriateLeaf.left = toBeDeleted.left;
+        appropriateLeaf.right = toBeDeleted.right;
         if (value < previousRoot.data) {
-          previousRoot.left = Node(
-            appropriateLeaf.data,
-            toBeDeleted.left,
-            toBeDeleted.right
-          );
+          previousRoot.left = appropriateLeaf;
         } else if (value > previousRoot.data) {
-          previousRoot.right = Node(
-            appropriateLeaf.data,
-            toBeDeleted.left,
-            toBeDeleted.right
-          );
+          previousRoot.right = appropriateLeaf;
         }
         break;
       case toBeDeleted.left === null && toBeDeleted.right === null:
@@ -135,16 +130,43 @@ const Tree = function (array) {
     }
   };
 
+  const getLevelOrderData = () => {
+    if(!queueArray.length) return
+    treeData.push(queueArray[0].data);
+    if (queueArray[0].left !== null) queueArray.push(queueArray[0].left);
+    if (queueArray[0].right!== null) queueArray.push(queueArray[0].right);
+    queueArray.shift();
+    if(queueArray.length) getLevelOrderData();
+  }
+
+  const levelOrder = function(fn) {
+    if (treeData.length) treeData.splice(0);
+    queueArray.push(this)
+    getLevelOrderData()
+    if (!fn) return treeData
+    treeData.forEach(fn);
+  }
+
+  const inorder = function (fn) {
+    if (treeData.length) treeData.splice(0);
+  }
+
   const balancedBinaryTree = buildBalancedTree(sortedArray);
 
-  return Object.assign(balancedBinaryTree, { insert, deleteRoot, find });
+  return Object.assign(balancedBinaryTree, { insert, deleteRoot, find, levelOrder, inorder });
 };
 
 const random1 = makeRandomNumArray(352);
 
-const firstTree = Tree(random1);
+const firstTree = Tree(numArray);
+// prettyPrint(firstTree);
+// firstTree.deleteRoot(random1[1]);
 prettyPrint(firstTree);
-firstTree.deleteRoot(random1[1]);
-prettyPrint(firstTree);
+
+const logger = (arg) => {
+  console.log(arg);
+}
+
+console.log(firstTree.levelOrder())
 
 export default Tree;
