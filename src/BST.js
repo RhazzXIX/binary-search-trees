@@ -16,6 +16,7 @@ const Tree = function (array) {
   const treeData = [];
   const queueArray = [];
   let level = 0;
+  let depthEdges = 0;
   const levelArray = [];
 
   const Node = (data, leftData, rightData) => {
@@ -225,6 +226,25 @@ const Tree = function (array) {
     return edges;
   };
 
+  const countDepth = (root, subTree) => {
+    if (root === subTree) return;
+    if (subTree.data < root.data) {
+      depthEdges += 1;
+      countDepth(root.left, subTree);
+    } else if (subTree.data > root.data) {
+      depthEdges += 1;
+      countDepth(root.right, subTree);
+    }
+  };
+
+  const depth = function (node) {
+    const root = find(node, this);
+    if (root === null) return root;
+    depthEdges = 0;
+    countDepth(this, root);
+    return depthEdges;
+  };
+
   const balancedBinaryTree = buildBalancedTree(sortedArray);
 
   return Object.assign(balancedBinaryTree, {
@@ -236,6 +256,7 @@ const Tree = function (array) {
     preorder,
     postorder,
     height,
+    depth,
   });
 };
 
@@ -259,6 +280,6 @@ firstTree.insert(53);
 firstTree.insert(54);
 
 prettyPrint(firstTree);
-console.log(firstTree.height(36));
+console.log(firstTree.depth(25));
 
 export default Tree;
