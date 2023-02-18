@@ -44,10 +44,7 @@ function mergeSort2(array) {
 
 const distinctify = (array) => {
   const distinctArray = [];
-  const arrayCopy = [];
-  let valueCounter = 0;
-
-
+  
   array.forEach(element => {
     const hasCopy = distinctArray.includes(element)
     if (hasCopy) return

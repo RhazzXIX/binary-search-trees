@@ -7,7 +7,6 @@ const numArray = [
   5, 75, 99, 100, 29, 1, 85, 63, 14, 85, 2, 14, 76, 45, 1, 25, 66, 75, 36, 9,
   11,
 ];
-const testArray = [5, 1, 25];
 
 const Tree = function (array) {
   const distinctArray = distinctify(array);
@@ -216,11 +215,11 @@ const Tree = function (array) {
   };
 
   const height = function (node) {
-    const root = find(node, this);
+    if (!node) return height(this);
     if (queueArray.length) queueArray.splice(0);
     if (levelArray.length) levelArray.splice(0);
     level = 0;
-    queueArray.push(root);
+    queueArray.push(node);
     countLevel();
     const edges = level - 1;
     return edges;
@@ -245,6 +244,23 @@ const Tree = function (array) {
     return depthEdges;
   };
 
+  const isBalanced = function ()  {
+    const leftSubTreeHeight = height(this.left)
+    const rightSubTreeHeight = height(this.right)
+    const difference = (leftSubTreeHeight - rightSubTreeHeight)
+
+    if (difference < 1 && difference > -1) return true
+    return false
+  }
+
+  const rebalance = function () {
+    const inorderArray = this.inorder()
+    const newTree = Tree(inorderArray);
+    this.data = newTree.data;
+    this.left = newTree.left;
+    this.right = newTree.right;
+  }
+
   const balancedBinaryTree = buildBalancedTree(sortedArray);
 
   return Object.assign(balancedBinaryTree, {
@@ -257,29 +273,34 @@ const Tree = function (array) {
     postorder,
     height,
     depth,
+    isBalanced,
+    rebalance
   });
 };
 
-const random1 = makeRandomNumArray(36);
 
-const firstTree = Tree(numArray);
-// prettyPrint(firstTree);
-// firstTree.deleteRoot(random1[1]);
-prettyPrint(firstTree);
+const testTree = () => {
+  const random1 = makeRandomNumArray(36);
+  const firstTree = Tree(random1);
+  const random150 = makeRandomNumArray(150);
+  console.log(firstTree.isBalanced())
+  console.log(firstTree.levelOrder());
+  console.log(firstTree.preorder());
+  console.log(firstTree.postorder());
+  console.log(firstTree.inorder());
+  random150.forEach(num => {
+    firstTree.insert(num)
+  });
+  prettyPrint(firstTree);
+  console.log(firstTree.isBalanced());
+  firstTree.rebalance();
+  console.log(firstTree.levelOrder());
+  console.log(firstTree.preorder());
+  console.log(firstTree.postorder());
+  console.log(firstTree.inorder());
+}
 
-const logger = (arg) => {
-  console.log(arg);
-};
 
-console.log(firstTree.inorder());
-// console.log(firstTree.preorder());
-// console.log(firstTree.postorder());
-firstTree.insert(51);
-firstTree.insert(52);
-firstTree.insert(53);
-firstTree.insert(54);
-
-prettyPrint(firstTree);
-console.log(firstTree.depth(25));
+testTree();
 
 export default Tree;
